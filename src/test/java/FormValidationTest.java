@@ -2,18 +2,19 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.junit.UsePlaywright;
 
+import com.microsoft.playwright.options.AriaRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 
-@UsePlaywright
-public class feildsform {
+@UsePlaywright(setup.class)
+public class FormValidationTest {
 
 
     @DisplayName("By fieldsText")
@@ -71,5 +72,29 @@ public class feildsform {
 */
 
     }
+    //Get Error Message
+
+    @DisplayName("getErrorMessage")
+    @Test
+    void getErrorMessage(Page page) {
+        page.navigate("https://practicesoftwaretesting.com/contact");
+        var bottom = page.locator(".btnSubmit");
+        bottom.click();
+        var errorMess = page.getByRole(AriaRole.ALERT).getByText("First name is required");
+        assertThat(errorMess).isVisible();
+
+        // get All Error Messages
+        //I use page.getByRole(AriaRole.ALERT) to capture all validation messages and then call allTextContents() to extract all error texts at once.
+        Locator allErrors = page.getByRole(AriaRole.ALERT).filter(new Locator.FilterOptions().setHasText(""));
+        // Locator allErrors = page.locator("[role='alert']"); this is simple one
+        List<String> AllErrorMessages = allErrors.allTextContents();
+        // we can used in one line print like  System.out.println(AllErrorMessages);
+        for (String all : AllErrorMessages) {
+            System.out.println("All messages " + all);
+        }
+
+
+    }
+
 
 }

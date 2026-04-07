@@ -1,11 +1,23 @@
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
+import com.microsoft.playwright.*;
+import com.microsoft.playwright.junit.Options;
+import com.microsoft.playwright.junit.OptionsFactory;
 
-public class setup {
-    Playwright playwright;
-    Browser browser;
-    Page page;
+import java.util.Arrays;
 
-    
+public class setup implements OptionsFactory {
+
+    @Override
+    public Options getOptions() {
+        return new Options()
+                .setLaunchOptions(
+                        new BrowserType.LaunchOptions()
+                                .setArgs(Arrays.asList(
+                                        "--no-sandbox",
+                                        "--disable-extensions",
+                                        "--disable-gpu"
+                                ))
+                                .setHeadless(false)
+                )
+                .setTestIdAttribute("data-test");
+    }
 }
