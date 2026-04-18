@@ -1,3 +1,5 @@
+package BaseSetup;
+
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.junit.Options;
 import com.microsoft.playwright.junit.OptionsFactory;
@@ -16,7 +18,7 @@ public class setup implements OptionsFactory {
                                         "--disable-extensions",
                                         "--disable-gpu"
                                 ))
-                                .setHeadless(false)
+                                .setHeadless(true)
                 )
                 .setTestIdAttribute("data-test");
     }
